@@ -4,7 +4,7 @@ from django.db import models
 class User(models.Model):
     first_name = models.CharField(max_length=64, verbose_name='имя')
     last_name = models.CharField(max_length=64, verbose_name='фамилия')
-    email = models.CharField(
+    email = models.EmailField(
         primary_key=True,
         verbose_name='электронная почта'
     )
