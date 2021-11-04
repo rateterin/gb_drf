@@ -1,7 +1,11 @@
 import React from "react";
 import logo from './logo.svg';
+import './index.css'
 import './App.css';
-import UserList from "./User";
+import UserList from "./components/User";
+import Footer from "./components/Footer";
+import axios from "axios";
+import Menu from "./components/Menu";
 
 
 class App extends React.Component {
@@ -13,31 +17,27 @@ class App extends React.Component {
     }
 
     componentDidMount() {
-       const users = [
-           {
-               'first_name': 'Фёдор',
-               'last_name': 'Достоевский',
-               'email': 'fedor_dostoyevskiy@example.com'
-           },
-           {
-               'first_name': 'Александр',
-               'last_name': 'Грин',
-               'email': 'alex_green@example.com'
-           },
-       ]
-       this.setState(
-           {
-               'users': users
-           }
-       )
-
+        axios
+            .get('http://localhost:8000/api/users/')
+            .then(response => {
+                const users = response.data;
+                this.setState({'users': users})
+                this.setState({'footer': Footer})
+                this.setState({'menu': Menu})
+            })
+            .catch(error => console.log(error))
     }
 
     render() {
-        return (
-            <div>
-                <UserList users={this.state.users} />
-            </div>
+        return ([
+                <div className={'App-header'}>
+                    <Menu menu={this.state.menu}/>
+                    <div>
+                        <UserList users={this.state.users}/>
+                    </div>
+                    <Footer footer={this.state.footer}/>
+                </div>
+            ]
         )
     }
 }

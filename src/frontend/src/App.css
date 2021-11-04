@@ -36,3 +36,15 @@
     transform: rotate(360deg);
   }
 }
+
+nav {margin-bottom: auto}
+
+table, th, td {
+  border-collapse: collapse;
+  border-radius: 1px;
+  border-color: white;
+  border-style: solid;
+  border-width: 1px;
+}
+
+footer {margin-top: auto}
