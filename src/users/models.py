@@ -2,8 +2,6 @@ from django.db import models
 
 from django.contrib.auth.models import AbstractUser
 
-from todo_app.models import Project
-
 
 class User(AbstractUser):
     first_name = models.CharField(max_length=64, verbose_name='имя')
@@ -14,7 +12,10 @@ class User(AbstractUser):
         blank=False,
         verbose_name='электронная почта'
     )
-    project = models.ManyToManyField(Project, related_name='project_users')
+    project = models.ManyToManyField(
+        'todo_app.Project',
+        related_name='project_users'
+    )
 
     class Meta:
         verbose_name = 'пользователь'
