@@ -4,6 +4,7 @@ from .serializers import UserSerializer
 
 
 class UserCustomViewSet(mixins.ListModelMixin,
+                        mixins.RetrieveModelMixin,
                         mixins.UpdateModelMixin,
                         GenericViewSet):
     queryset = User.objects.all()

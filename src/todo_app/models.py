@@ -24,6 +24,7 @@ class Todo(models.Model):
     user_created = models.OneToOneField('users.User',
                                         on_delete=models.CASCADE,
                                         editable=False)
+    complete = models.BooleanField(default=False)
 
     class Meta:
         verbose_name = 'ToDo заметка'
