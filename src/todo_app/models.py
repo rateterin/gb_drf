@@ -21,13 +21,18 @@ class Todo(models.Model):
     text = models.TextField()
     created_date = models.DateTimeField(auto_now_add=True, editable=False)
     updated_date = models.DateTimeField(auto_now=True, editable=False)
-    user_created = models.OneToOneField('users.User',
-                                        on_delete=models.CASCADE,
-                                        editable=False)
+    user_created = models.ForeignKey('users.User',
+                                     on_delete=models.PROTECT,
+                                     related_name='todo_user_created')
+    complete = models.BooleanField(default=False)
 
     class Meta:
         verbose_name = 'ToDo заметка'
         verbose_name_plural = 'ToDo заметки'
 
+    def delete(self, using=None, keep_parents=False):
+        self.complete = True
+        self.save()
+
     def __str__(self):
-        return f'ToDo заметка для проекта "{Todo.project.name}"'
+        return f'ToDo заметка для проекта "{self.project.name}"'
