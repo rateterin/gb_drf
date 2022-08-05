@@ -21,7 +21,6 @@ class TodoPagination(PageNumberPagination):
 class ProjectModelFilterViewSet(ModelViewSet):
     queryset = Project.objects.all()
     serializer_class = ProjectModelSerializer
-    pagination_class = ProjectPagination
     filterset_class = ProjectFilter
 
 

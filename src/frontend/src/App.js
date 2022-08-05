@@ -3,6 +3,8 @@ import logo from './logo.svg';
 import './index.css'
 import './App.css';
 import UserList from "./components/User";
+import ProjectList from "./components/Project";
+import ToDoList from "./components/ToDo";
 import Footer from "./components/Footer";
 import axios from "axios";
 import Menu from "./components/Menu";
@@ -13,42 +15,43 @@ class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            'count': 0,
-            'users': [],
-            'usersPgPrev': '',
-            'usersPgNext': '',
+            'projects': {},
+            'users': {},
+            'todo': {},
         };
     }
 
     componentDidMount() {
         axios
+            .get('http://localhost:8000/api/projects/?format=json')
+            .then(response => {this.setState({'projects': response.data});})
+            .catch(error => console.log(error));
+        axios
             .get('http://localhost:8000/api/users/?format=json')
-            .then(response => {
-                this.setState({'count': response['data']['count']});
-                this.setState({'users': response['data']['results']});
-                this.setState({'usersPgPrev': response['data']['previous']});
-                this.setState({'usersPgNext': response['data']['next']});
-                this.setState({'footer': Footer});
-                this.setState({'menu': Menu});
-            })
+            .then(response => {this.setState({'users': response.data});})
+            .catch(error => console.log(error));
+        axios
+            .get('http://localhost:8000/api/todo/?format=json')
+            .then(response => {this.setState({'todo': response.data});})
             .catch(error => console.log(error));
     }
 
     render() {
         return ([
-            <BrowserRouter>
+                <BrowserRouter>
                 <div className={'App-header'}>
-                    <Menu menu={this.state.menu}/>
+                    <Menu menu={Menu}/>
                         <div>
-                            <UserList
-                                users={this.state.users}
-                                prev={this.state.usersPgPrev}
-                                next={this.state.usersPgNext}
-                            />
+                            <Route exact path='/projects' component={() => 
+                            <ProjectList items={this.state.projects} />} />
+                            <Route exact path='/users' component={() => 
+                            <UserList users={this.state.users} />} />
+                            <Route exact path='/todo' component={() => 
+                            <ToDoList items={this.state.todo} />} />
                         </div>
-                    <Footer footer={this.state.footer}/>
+                    <Footer footer={Footer}/>
                 </div>
-            </BrowserRouter>
+                </BrowserRouter>
             ]
         );
     }
